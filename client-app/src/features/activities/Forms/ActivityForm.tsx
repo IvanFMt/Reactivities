@@ -1,7 +1,11 @@
 import React from 'react'
-import { Card, Form } from 'react-bootstrap'
+import { Card, Form, Button } from 'react-bootstrap'
 
-const ActivityForm : React.FC = () => {
+interface IProps{
+    setEditMode : (editMode : boolean) => void;
+}
+
+const ActivityForm : React.FC<IProps> = ({ setEditMode }) => {
     return (
         <Card className="mt-2">
             <Card.Body>
@@ -11,6 +15,18 @@ const ActivityForm : React.FC = () => {
             <Form.Control className="mt-3" type="date" placeholder="Date" />
             <Form.Control className="mt-3" type="text" placeholder="City" />
             <Form.Control className="mt-3 mb-3" type="text" placeholder="Venue" />
+            <div className="float-right">
+                <Button 
+                    onClick={ () => setEditMode(false) }
+                    variant="outline-danger" 
+                    size="sm"
+                >
+                    Cancel
+                </Button>
+                <Button variant="success" size="sm" className="ml-1">
+                    Submit
+                </Button>
+            </div>
             </Card.Body>
         </Card>
     )

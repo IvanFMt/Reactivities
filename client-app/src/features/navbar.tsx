@@ -1,7 +1,11 @@
 import React from 'react'
 import { Navbar, Nav,   Button } from 'react-bootstrap';
 
-export const NavBar = () => {
+interface Iprops{
+    openCreateForm : () => void
+}
+
+export const NavBar : React.FC<Iprops> = ({ openCreateForm }) => {
     return (
         <Navbar bg="dark" expand="lg">
         <Navbar.Brand href="#home">
@@ -17,7 +21,12 @@ export const NavBar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
                 <Nav.Link href="#home" className="text-white" style={{marginRight:'10px'}}>Activities</Nav.Link>
-                <Button variant="success">Create Activity</Button>
+                <Button 
+                    variant="success"
+                    onClick={()=> openCreateForm()}
+                >
+                    Create Activity
+                </Button>
             </Nav>
         </Navbar.Collapse>
         </Navbar>
