@@ -9,6 +9,7 @@ interface IProps{
     selectedActivity : IActivity | null;
     createActivity : (activity : IActivity) => void;
     editActivity : (activity : IActivity) => void;
+    submitting : boolean;
 }
 
 const ActivityForm : React.FC<IProps> = (
@@ -16,7 +17,8 @@ const ActivityForm : React.FC<IProps> = (
         setEditMode, 
         selectedActivity,
         createActivity,
-        editActivity
+        editActivity,
+        submitting,
     }) => {
 
     const initializeForm = () => {
@@ -113,12 +115,13 @@ const ActivityForm : React.FC<IProps> = (
                     </Button>
 
                     <Button 
+                        disabled={submitting}
                         variant="success" 
                         size="sm" 
                         className="ml-1"  
                         onClick={handleSubmitForm}
                     >
-                        Submit
+                        {!submitting ? 'Submit' : 'Loading'} 
                     </Button>
                 </div>
             </Form>

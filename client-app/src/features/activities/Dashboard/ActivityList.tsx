@@ -6,9 +6,10 @@ interface IProp{
     activities: Array<IActivity>;
     selectActivity : (id: string) => void;
     deleteActivity : (id : string) => void;
+    submitting : boolean;
 }
 
-const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity }) => {
+const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity,submitting }) => {
     return (
         <Fragment>
             {
@@ -21,7 +22,7 @@ const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActiv
                                 {activity.description}
                             </Card.Text>
                             <Badge variant="light" className="p-2">{activity.category}</Badge>
-                            <Button 
+                            <Button
                                 onClick= { () => selectActivity(activity.id) }
                                 variant="primary" 
                                 className="float-right"
@@ -29,11 +30,12 @@ const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActiv
                                 View
                             </Button>
                             <Button 
+                                disabled={submitting}
                                 onClick= { () => deleteActivity(activity.id) }
                                 variant="danger" 
                                 className="float-right mr-1"
                             >
-                                Delete
+                                { !submitting ? 'Delete' : 'Loading'}
                             </Button>
                         </Card.Body>
                     </Card>

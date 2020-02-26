@@ -15,6 +15,7 @@ interface IProps {
     createActivity : (activity : IActivity) => void;
     editActivity : (activity : IActivity) => void;
     deleteActivity : (id : string) => void;
+    submitting : boolean;
 }
 
 const ActivityDasboard : React.FC<IProps> = (
@@ -27,7 +28,8 @@ const ActivityDasboard : React.FC<IProps> = (
         setSelectedActivity,
         createActivity,
         editActivity,
-        deleteActivity
+        deleteActivity,
+        submitting,
     }
     ) => {
     return (
@@ -38,6 +40,7 @@ const ActivityDasboard : React.FC<IProps> = (
                         activities={activities} 
                         selectActivity = {selectActivity}
                         deleteActivity = { deleteActivity }
+                        submitting = { submitting }
                     />
                 </Col>
                 <Col md={5} className="mt-2">
@@ -50,6 +53,7 @@ const ActivityDasboard : React.FC<IProps> = (
                     )}
                     {editMode && 
                         <ActivityForm 
+                            submitting = { submitting }
                             key={ selectedActivity?.id && (selectedActivity.id || 0) }
                             setEditMode={ setEditMode } 
                             selectedActivity={ selectedActivity }
