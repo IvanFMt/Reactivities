@@ -1,13 +1,14 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
 import { IActivity } from '../../../app/models/activities'
 
 interface IProps{
     selectedActivity : IActivity;
     setEditMode : (editMode : boolean) => void;
+    setSelectedActivity : ( activity : IActivity | null ) => void;
 }
 
-const ActivityDetail : React.FC<IProps> = ({ selectedActivity, setEditMode }) => {
+const ActivityDetail : React.FC<IProps> = ({ selectedActivity, setEditMode, setSelectedActivity }) => {
     return (
         <Card>
         <Card.Img variant="top" src={`assets/categoryImages/${selectedActivity.category}.jpg`} />
@@ -25,7 +26,7 @@ const ActivityDetail : React.FC<IProps> = ({ selectedActivity, setEditMode }) =>
                     variant="outline-primary"
                 >Edit
                 </Button>
-                <Button variant="outline-danger">Cancel</Button>
+                <Button variant="outline-danger" onClick = { () => setSelectedActivity(null)} >Cancel</Button>
             </ButtonGroup>
         </Card.Footer>
         </Card>

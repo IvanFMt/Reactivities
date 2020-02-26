@@ -5,9 +5,10 @@ import { IActivity } from '../../../app/models/activities';
 interface IProp{
     activities: Array<IActivity>;
     selectActivity : (id: string) => void;
+    deleteActivity : (id : string) => void;
 }
 
-const ActivityList: React.FC<IProp> = ({activities, selectActivity}) => {
+const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity }) => {
     return (
         <Fragment>
             {
@@ -26,6 +27,13 @@ const ActivityList: React.FC<IProp> = ({activities, selectActivity}) => {
                                 className="float-right"
                             >
                                 View
+                            </Button>
+                            <Button 
+                                onClick= { () => deleteActivity(activity.id) }
+                                variant="danger" 
+                                className="float-right mr-1"
+                            >
+                                Delete
                             </Button>
                         </Card.Body>
                     </Card>

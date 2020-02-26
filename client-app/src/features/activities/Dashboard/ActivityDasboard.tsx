@@ -11,6 +11,10 @@ interface IProps {
     selectedActivity : IActivity | null;
     setEditMode : (editMode : boolean) => void;
     editMode : boolean;
+    setSelectedActivity : ( activity : IActivity | null ) => void;
+    createActivity : (activity : IActivity) => void;
+    editActivity : (activity : IActivity) => void;
+    deleteActivity : (id : string) => void;
 }
 
 const ActivityDasboard : React.FC<IProps> = (
@@ -20,19 +24,39 @@ const ActivityDasboard : React.FC<IProps> = (
         selectedActivity,
         setEditMode,
         editMode,
+        setSelectedActivity,
+        createActivity,
+        editActivity,
+        deleteActivity
     }
     ) => {
     return (
         <Fragment>
             <Row>
                 <Col md={7}>
-                    <ActivityList activities={activities} selectActivity = {selectActivity}/>
+                    <ActivityList 
+                        activities={activities} 
+                        selectActivity = {selectActivity}
+                        deleteActivity = { deleteActivity }
+                    />
                 </Col>
                 <Col md={5} className="mt-2">
-                    {selectedActivity && !editMode &&(
-                        <ActivityDetail selectedActivity = {selectedActivity} setEditMode = {setEditMode}/>
+                    {selectedActivity && !editMode && (
+                        <ActivityDetail 
+                            selectedActivity = {selectedActivity} 
+                            setEditMode = {setEditMode}
+                            setSelectedActivity = { setSelectedActivity }
+                        />
                     )}
-                    {editMode && <ActivityForm setEditMode={setEditMode}/>}
+                    {editMode && 
+                        <ActivityForm 
+                            key={ selectedActivity?.id && (selectedActivity.id || 0) }
+                            setEditMode={ setEditMode } 
+                            selectedActivity={ selectedActivity }
+                            createActivity = { createActivity }
+                            editActivity = { editActivity }
+                        />
+                    }
                  </Col>
             </Row>
         </Fragment>
