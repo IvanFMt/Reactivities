@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, SyntheticEvent } from 'react';
 import './styles.css';
 
 import { IActivity } from '../models/activities';
@@ -16,6 +16,7 @@ const App = () => {
   const [ editMode, setEditMode ] = useState<boolean>(false);
   const [ loadingPage, setLoadingPage ] = useState<boolean>(true);
   const [ submitting, setSubmitting ] = useState<boolean>(false);
+  const [ target, setTarget ] = useState<string>('');
 
   const handleSelectedActivity = (id : string) => {
     setSelectedActivity(activities.filter( (x : IActivity) => x.id === id)[0]);
@@ -46,8 +47,10 @@ const App = () => {
     }).then(()=> setSubmitting(false));
   }
 
-  const handleDeleteActivity = (id : string) => {
+  const handleDeleteActivity = (e : SyntheticEvent<HTMLButtonElement>, id : string) => {
     setSubmitting(true);
+    setTarget(e.currentTarget.name);
+
     agent.Activities.delete(id).then(() => {
       setActivities([...activities.filter((x : IActivity) =>  x.id !== id )])
     }).then(()=> setSubmitting(false));
@@ -83,6 +86,7 @@ const App = () => {
                 editActivity = { handleEditActivity }
                 deleteActivity = { handleDeleteActivity }  
                 submitting = { submitting }
+                target = { target }
               />
         </Container>
       </Fragment>

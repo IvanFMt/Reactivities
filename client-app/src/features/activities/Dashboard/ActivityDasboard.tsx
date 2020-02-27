@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, SyntheticEvent } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { IActivity } from '../../../app/models/activities';
 import ActivityList from './ActivityList';
@@ -14,8 +14,9 @@ interface IProps {
     setSelectedActivity : ( activity : IActivity | null ) => void;
     createActivity : (activity : IActivity) => void;
     editActivity : (activity : IActivity) => void;
-    deleteActivity : (id : string) => void;
+    deleteActivity : (e : SyntheticEvent<HTMLButtonElement>, id : string) => void;
     submitting : boolean;
+    target : string;
 }
 
 const ActivityDasboard : React.FC<IProps> = (
@@ -30,6 +31,7 @@ const ActivityDasboard : React.FC<IProps> = (
         editActivity,
         deleteActivity,
         submitting,
+        target
     }
     ) => {
     return (
@@ -41,7 +43,8 @@ const ActivityDasboard : React.FC<IProps> = (
                         selectActivity = {selectActivity}
                         deleteActivity = { deleteActivity }
                         submitting = { submitting }
-                    />
+                        target = { target }
+                    /> 
                 </Col>
                 <Col md={5} className="mt-2">
                     {selectedActivity && !editMode && (

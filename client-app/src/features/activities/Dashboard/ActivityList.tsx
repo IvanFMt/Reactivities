@@ -1,15 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, SyntheticEvent } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { IActivity } from '../../../app/models/activities';
 
 interface IProp{
     activities: Array<IActivity>;
     selectActivity : (id: string) => void;
-    deleteActivity : (id : string) => void;
+    deleteActivity : (e: SyntheticEvent<HTMLButtonElement>, id : string) => void;
     submitting : boolean;
+    target : string
 }
 
-const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity,submitting }) => {
+const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity,submitting, target }) => {
     return (
         <Fragment>
             {
@@ -30,12 +31,13 @@ const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActiv
                                 View
                             </Button>
                             <Button 
-                                disabled={submitting}
-                                onClick= { () => deleteActivity(activity.id) }
+                                name= {activity.id}
+                                disabled={ (target === activity.id) && submitting}
+                                onClick= { (e : SyntheticEvent<HTMLButtonElement>) => deleteActivity(e,activity.id) }
                                 variant="danger" 
                                 className="float-right mr-1"
                             >
-                                { !submitting ? 'Delete' : 'Loading'}
+                                { (target === activity.id) && submitting ? 'Loading' : 'Delete'}
                             </Button>
                         </Card.Body>
                     </Card>
