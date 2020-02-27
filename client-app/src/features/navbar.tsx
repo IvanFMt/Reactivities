@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Navbar, Nav,   Button } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
+import ActivityStore from '../app/stores/ActivityStore';
 
-interface Iprops{
-    openCreateForm : () => void
-}
+const NavBar : React.FC = () => {
+    
+    const activityStore = useContext(ActivityStore);
 
-export const NavBar : React.FC<Iprops> = ({ openCreateForm }) => {
     return (
         <Navbar bg="dark" expand="lg">
         <Navbar.Brand href="#home">
@@ -23,7 +24,7 @@ export const NavBar : React.FC<Iprops> = ({ openCreateForm }) => {
                 <Nav.Link href="#home" className="text-white" style={{marginRight:'10px'}}>Activities</Nav.Link>
                 <Button 
                     variant="success"
-                    onClick={()=> openCreateForm()}
+                    onClick={activityStore.openCreateForm}
                 >
                     Create Activity
                 </Button>
@@ -32,3 +33,5 @@ export const NavBar : React.FC<Iprops> = ({ openCreateForm }) => {
         </Navbar>
     )
 }
+
+export default observer(NavBar);

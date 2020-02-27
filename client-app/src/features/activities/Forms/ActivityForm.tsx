@@ -1,25 +1,17 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
+
 import { IActivity } from '../../../app/models/activities';
-//@ts-ignore
+import ActivityStore from '../../../app/stores/ActivityStore';
+
+//@ts-ignore 
 import { v4 as uuid } from 'uuid';
 
-interface IProps{
-    setEditMode : (editMode : boolean) => void;
-    selectedActivity : IActivity | null;
-    createActivity : (activity : IActivity) => void;
-    editActivity : (activity : IActivity) => void;
-    submitting : boolean;
-}
+const ActivityForm : React.FC = () => {
 
-const ActivityForm : React.FC<IProps> = (
-    { 
-        setEditMode, 
-        selectedActivity,
-        createActivity,
-        editActivity,
-        submitting,
-    }) => {
+    const activityStore = useContext(ActivityStore);
+    const { createActivity, editActivity, submitting, cancelSelectedActivity, selectedActivity } = activityStore;
 
     const initializeForm = () => {
         if(selectedActivity){ return selectedActivity }
@@ -44,7 +36,7 @@ const ActivityForm : React.FC<IProps> = (
     const handleSubmitForm = () =>{
         activity.id.length === 0 ? createActivity({...activity, id: uuid()}) : editActivity(activity);
     }
-
+  
     return (
         <Card className="mt-2">
             <Card.Body>
@@ -107,7 +99,7 @@ const ActivityForm : React.FC<IProps> = (
 
                 <div className="float-right">
                     <Button 
-                        onClick={ () => setEditMode(false) }
+                        onClick={cancelSelectedActivity}
                         variant="outline-danger" 
                         size="sm"
                     >
@@ -131,4 +123,4 @@ const ActivityForm : React.FC<IProps> = (
     )
 }
 
-export default ActivityForm
+export default observer(ActivityForm);

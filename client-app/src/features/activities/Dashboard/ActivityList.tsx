@@ -1,20 +1,17 @@
-import React, { Fragment, SyntheticEvent } from 'react';
+import React, { Fragment, SyntheticEvent, useContext } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
-import { IActivity } from '../../../app/models/activities';
+import { observer } from 'mobx-react-lite';
+import ActivityStore from '../../../app/stores/ActivityStore';
 
-interface IProp{
-    activities: Array<IActivity>;
-    selectActivity : (id: string) => void;
-    deleteActivity : (e: SyntheticEvent<HTMLButtonElement>, id : string) => void;
-    submitting : boolean;
-    target : string
-}
+const ActivityList: React.FC = () => {
+    
+    const activityStore = useContext(ActivityStore);
+    const { activitiesByDate , selectActivity, submitting, target, deleteActivity  }  = activityStore;
 
-const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActivity,submitting, target }) => {
     return (
         <Fragment>
             {
-                activities.map( activity => (
+                activitiesByDate.map( activity => (
                     <Card key={activity.id} style={{ width: '40rem' }} className="mt-2">
                         <Card.Body>
                             <Card.Title>{activity.title}</Card.Title>
@@ -47,4 +44,4 @@ const ActivityList: React.FC<IProp> = ({ activities, selectActivity, deleteActiv
     )
 }
 
-export default ActivityList;
+export default observer(ActivityList);
