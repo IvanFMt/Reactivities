@@ -28,15 +28,15 @@ class ActivityStore{
         
         agent.Activities.list()
         .then( (activities : Array<IActivity>) => {
-            runInAction(()=> {
-            activities.forEach( (activity : IActivity) => {
-                activity.date = activity.date.split('.')[0];
-                this.activityRegistry.set(activity.id, activity);
+            runInAction('loading activities',()=> {
+                activities.forEach( (activity : IActivity) => {
+                    activity.date = activity.date.split('.')[0];
+                    this.activityRegistry.set(activity.id, activity);
+                })
             })
         })
-        })
         .catch( err => { console.log(err + ' error getting api values') })
-        .finally(()=> runInAction(()=> {this.loadingPage = false }))
+        .finally(()=> runInAction('end loading actvities',()=> {this.loadingPage = false }))
     }
 
     @action selectActivity = (id: string) => {
@@ -49,36 +49,45 @@ class ActivityStore{
 
         agent.Activities.create(activity)
         .then(() => {
-            this.activityRegistry.set(activity.id, activity);
-            this.selectedActivity = this.activityRegistry.get(activity.id);
-            this.editMode = false;
+            runInAction('creating activity',()=> {
+                this.activityRegistry.set(activity.id, activity);
+                this.selectedActivity = this.activityRegistry.get(activity.id);
+                this.editMode = false;
+            })
         })
         .catch((err)=> console.log(err))
-        .finally(() => this.submitting= false);
+        .finally(() => runInAction('end creating activity',()=> {this.submitting= false }));
     }
 
     @action editActivity = (activity : IActivity) => {
         this.submitting = true;
-        agent.Activities.update(activity).then(() => {
-            this.activityRegistry.set(activity.id, activity);
-            this.selectedActivity = activity;
-            this.editMode = false;
+        agent.Activities.update(activity)
+        .then(() => {
+            runInAction('editing activity',()=> {
+                this.activityRegistry.set(activity.id, activity);
+                this.selectedActivity = activity;
+                this.editMode = false;
+            })
         })
         .catch((err) => console.log(err))
-        .finally(()=>  this.submitting = false);
+        .finally(()=>  runInAction('end editing activity',()=> { this.submitting = false}));
     }
 
     @action deleteActivity = (e : SyntheticEvent<HTMLButtonElement>, id : string) => {
         this.submitting =true;
         this.target = e.currentTarget.name;
 
-        agent.Activities.delete(id).then(() => {
-            this.activityRegistry.delete(id);
-        }).then(()=> this.submitting = false);
+        agent.Activities.delete(id)
+        .then(() => {
+            runInAction('deleting activity',()=> {
+                this.activityRegistry.delete(id);
+            })
+        })
+        .finally(()=> runInAction('end deleting activity',()=> { this.submitting = false }));
 
     }
 
-    @action openCreateForm = () =>{
+    @action openCreateForm = () => {
         this.editMode = true;
         this.selectedActivity = undefined;
     }
