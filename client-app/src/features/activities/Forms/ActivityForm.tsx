@@ -9,7 +9,7 @@ import ActivityStore from '../../../app/stores/ActivityStore';
 import { v4 as uuid } from 'uuid';
 
 //@ts-ignore 
-import { RouteComponentsProps } from 'react-router-dom';
+import { RouteComponentsProps, Link } from 'react-router-dom';
 
 const ActivityForm : React.FC<RouteComponentsProps> = ({ history }) => {
 
@@ -117,6 +117,7 @@ const ActivityForm : React.FC<RouteComponentsProps> = ({ history }) => {
                         onClick={cancelSelectedActivity}
                         variant="outline-danger" 
                         size="sm"
+                        as={Link} to ='/activities'
                     >
                         Cancel
                     </Button>

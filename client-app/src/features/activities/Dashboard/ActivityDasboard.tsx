@@ -1,15 +1,19 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useEffect, useContext } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import ActivityList from './ActivityList';
-import ActivityDetail from '../Details/ActivityDetail';
-import ActivityForm from '../Forms/ActivityForm';
 import { observer } from 'mobx-react-lite';
+import LoadingScreen from '../../../app/layout/LoadingScreen';
 import ActivityStore from '../../../app/stores/ActivityStore';
 
 const ActivityDasboard: React.FC = () => {
-
     const activityStore = useContext(ActivityStore);
-    const { editMode, selectedActivity } = activityStore 
+
+    useEffect(() => {
+      activityStore.loadActivities();
+    }, [activityStore]);
+  
+    if (activityStore.loadingPage) return (<LoadingScreen content="Loading the page for you..." />);
+    
     return (
         <Fragment>
             <Row>

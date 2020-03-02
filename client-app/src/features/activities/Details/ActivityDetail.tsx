@@ -12,11 +12,11 @@ interface RouteParms{
 
 const ActivityDetail: React.FC<RouteComponentProps<RouteParms>> = ({ match, history }) => {
     const activityStore = useContext(ActivityStore);
-    const { selectedActivity, openEditForm, cancelSelectedActivity, loadActivity, loadingPage } = activityStore;
+    const { selectedActivity, loadActivity, loadingPage } = activityStore;
 
     useEffect(() => {
         loadActivity(match.params.id);
-    },[loadActivity])
+    },[loadActivity, match.params.id])
     
     if (loadingPage || selectedActivity === undefined) return (<LoadingScreen content="Loading the page for you..." />);
     return (

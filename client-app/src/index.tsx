@@ -8,10 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // @ts-ignore
 import { BrowserRouter } from 'react-router-dom';
+import ScrollToTop from './app/layout/ScrollToTop';
 
 
 ReactDOM.render(
     <BrowserRouter>
+        <ScrollToTop />
         <App />
     </BrowserRouter>
 , document.getElementById('root'));

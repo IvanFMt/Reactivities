@@ -11,7 +11,7 @@ const NavBar : React.FC = () => {
     const activityStore = useContext(ActivityStore);
 
     return (
-        <Navbar bg="dark" expand="lg">
+        <Navbar sticky="top" bg="dark" expand="lg">
         <Navbar.Brand as={Link} to='/'>
             <img
             src="/assets/logo.png"
