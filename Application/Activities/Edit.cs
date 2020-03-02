@@ -32,23 +32,28 @@ namespace Application.Activities
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
-            {
-                Activity activity = await _db.Activities.FindAsync(request.Id);
+            {   
+                try{
+                    Activity activityRequest = _mapper.Map<Activity>(request);
 
-                if(activity == null) throw new Exception("Activity not found");
+                    Activity activity = await _db.Activities.FindAsync(request.Id);
 
-                activity.Title = request.Title ?? activity.Title;
-                activity.Description = request.Description ?? activity.Description;
-                activity.Category = request.Category ?? activity.Category;
-                activity.Date = request.Date ?? activity.Date;
-                activity.City = request.City ?? activity.City;
-                activity.Venue = request.Venue ?? activity.Venue;
+                    if(activity == null) throw new Exception("Activity not found");
 
-                var success = await _db.SaveChangesAsync() > 0;
+                    activity.Title = request.Title ?? activity.Title;
+                    activity.Description = request.Description ?? activity.Description;
+                    activity.Category = request.Category ?? activity.Category;
+                    activity.Date = request.Date ?? activity.Date;
+                    activity.City = request.City ?? activity.City;
+                    activity.Venue = request.Venue ?? activity.Venue;
+                    await _db.SaveChangesAsync();
+            
+                    return Unit.Value;
+                }
+                catch{
+                    throw new Exception("Ocurrio un error al actualizar");
+                }
 
-                if(success) return Unit.Value;
-
-                throw new Exception ("Problem saving changes");
             }
         }   
     }

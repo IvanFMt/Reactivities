@@ -17,14 +17,15 @@ const ActivityDasboard: React.FC = () => {
                     <ActivityList/>
                 </Col>
                 <Col md={5} className="mt-2">
-                    {selectedActivity && !editMode && (
+                    {/* {selectedActivity && !editMode && (
                         <ActivityDetail/>
                     )}
                     {editMode &&
                         <ActivityForm
                             key={selectedActivity?.id && (selectedActivity.id || 0)}
                         />
-                    }
+                    } */}
+                    <h1>Activities Filters</h1> 
                 </Col>
             </Row>
         </Fragment>

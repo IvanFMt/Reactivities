@@ -2,6 +2,8 @@ import React, { Fragment, SyntheticEvent, useContext } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import ActivityStore from '../../../app/stores/ActivityStore';
+//@ts-ignore
+import { Link }from 'react-router-dom';
 
 const ActivityList: React.FC = () => {
     
@@ -21,7 +23,7 @@ const ActivityList: React.FC = () => {
                             </Card.Text>
                             <Badge variant="light" className="p-2">{activity.category}</Badge>
                             <Button
-                                onClick= { () => selectActivity(activity.id) }
+                                as={Link} to={`/activity/${activity.id}`}
                                 variant="primary" 
                                 className="float-right"
                             >

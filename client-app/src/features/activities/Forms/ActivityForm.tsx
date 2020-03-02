@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useContext } from 'react';
+import React, { useState, FormEvent, useContext, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
@@ -8,10 +8,13 @@ import ActivityStore from '../../../app/stores/ActivityStore';
 //@ts-ignore 
 import { v4 as uuid } from 'uuid';
 
-const ActivityForm : React.FC = () => {
+//@ts-ignore 
+import { RouteComponentsProps } from 'react-router-dom';
+
+const ActivityForm : React.FC<RouteComponentsProps> = ({ history }) => {
 
     const activityStore = useContext(ActivityStore);
-    const { createActivity, editActivity, submitting, cancelSelectedActivity, selectedActivity } = activityStore;
+    const { createActivity, editActivity, submitting, cancelSelectedActivity, selectedActivity, clearActivity } = activityStore;
 
     const initializeForm = () => {
         if(selectedActivity){ return selectedActivity }
@@ -34,8 +37,20 @@ const ActivityForm : React.FC = () => {
     }
 
     const handleSubmitForm = () =>{
-        activity.id.length === 0 ? createActivity({...activity, id: uuid()}) : editActivity(activity);
+        let newActivity : IActivity;
+        if(activity.id.length === 0){
+            newActivity = {...activity, id: uuid()}
+            createActivity(newActivity,history)
+        }else{
+            editActivity(activity,history)
+        }
     }
+
+    useEffect(()=>{
+        return () => {
+            clearActivity();
+        }        
+    },[clearActivity])
   
     return (
         <Card className="mt-2">

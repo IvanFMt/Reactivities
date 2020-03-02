@@ -39,27 +39,51 @@ class ActivityStore{
         .finally(()=> runInAction('end loading actvities',()=> {this.loadingPage = false }))
     }
 
+    @action loadActivity = (id: string) => {
+      
+        let activity = this.getActivity(id);
+        if (activity) {
+            this.selectedActivity = activity
+        }else{
+            this.loadingPage = true;
+             agent.Activities.details(id).then((res)=> {
+                 runInAction('geting details of activity',()=>{
+                     this.selectedActivity = res;
+                 })
+             }).catch(()=>console.log('Error al conusltar en el api'))
+             .finally(()=> runInAction('end geting details of activity',()=>{this.loadingPage = false}));
+        }
+    }
+
+    //is not an action cause it doesn`t mutate state
+    getActivity = (id : string) => {
+        return this.activityRegistry.get(id);
+    }
+
     @action selectActivity = (id: string) => {
         this.selectedActivity = this.activityRegistry.get(id);
         this.editMode = false;
     }
 
-    @action createActivity = ( activity : IActivity) => {
+    @action createActivity = async( activity : IActivity, history : any) => {
+        
         this.submitting= true;
-
+        this.selectedActivity = undefined;
         agent.Activities.create(activity)
         .then(() => {
             runInAction('creating activity',()=> {
                 this.activityRegistry.set(activity.id, activity);
                 this.selectedActivity = this.activityRegistry.get(activity.id);
                 this.editMode = false;
+                
             })
         })
+        .then(()=> runInAction('creating activity', ()=> {history.push(`/activity/${activity.id}`)} ))
         .catch((err)=> console.log(err))
         .finally(() => runInAction('end creating activity',()=> {this.submitting= false }));
     }
 
-    @action editActivity = (activity : IActivity) => {
+    @action editActivity = async (activity : IActivity, history : any) => {
         this.submitting = true;
         agent.Activities.update(activity)
         .then(() => {
@@ -70,6 +94,7 @@ class ActivityStore{
             })
         })
         .catch((err) => console.log(err))
+        .then(()=> runInAction('creating activity', ()=> {history.push(`/activity/${activity.id}`)} ))
         .finally(()=>  runInAction('end editing activity',()=> { this.submitting = false}));
     }
 
@@ -84,7 +109,10 @@ class ActivityStore{
             })
         })
         .finally(()=> runInAction('end deleting activity',()=> { this.submitting = false }));
+    }
 
+    @action clearActivity = () => {
+        this.selectedActivity = undefined; 
     }
 
     @action openCreateForm = () => {
