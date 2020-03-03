@@ -22,7 +22,7 @@ class ActivityStore{
     }
 
     /*actions*/
-    @action loadActivities = () =>{
+    @action loadActivities = async () =>{
         this.loadingPage = true;
         
         agent.Activities.list()
@@ -38,18 +38,17 @@ class ActivityStore{
         .finally(()=> runInAction('end loading actvities',()=> {this.loadingPage = false }))
     }
 
-    @action loadActivity = (id: string) => {
-      
+    @action loadActivity = async (id: string) => {
         let activity = this.getActivity(id);
         if (activity) {
-            this.selectedActivity = activity
+            this.selectedActivity = activity;
         }else{
             this.loadingPage = true;
              agent.Activities.details(id).then((res)=> {
                  runInAction('geting details of activity',()=>{
                      this.selectedActivity = res;
                  })
-             }).catch(()=>console.log('Error al conusltar en el api'))
+             }).catch((err)=>{console.log(err)})
              .finally(()=> runInAction('end geting details of activity',()=>{this.loadingPage = false}));
         }
     }
@@ -59,7 +58,7 @@ class ActivityStore{
         return this.activityRegistry.get(id);
     }
 
-    @action selectActivity = (id: string) => {
+    @action selectActivity = async (id: string) => {
         this.selectedActivity = this.activityRegistry.get(id);
         this.editMode = false;
     }
@@ -97,7 +96,7 @@ class ActivityStore{
         .finally(()=>  runInAction('end editing activity',()=> { this.submitting = false}));
     }
 
-    @action deleteActivity = (e : SyntheticEvent<HTMLButtonElement>, id : string) => {
+    @action deleteActivity = async (e : SyntheticEvent<HTMLButtonElement>, id : string) => {
         this.submitting =true;
         this.target = e.currentTarget.name;
 

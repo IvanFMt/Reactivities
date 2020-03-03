@@ -1,8 +1,11 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -19,6 +22,19 @@ namespace Application.Activities
             public DateTime? Date { get; set; }
             public string City { get; set; }
             public string Venue { get; set; }
+        }
+
+          public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+                RuleFor(x => x.Category).NotEmpty();
+                RuleFor(x => x.Date).NotEmpty();
+                RuleFor(x => x.City).NotEmpty();
+                RuleFor(x => x.Venue).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -38,7 +54,7 @@ namespace Application.Activities
 
                     Activity activity = await _db.Activities.FindAsync(request.Id);
 
-                    if(activity == null) throw new Exception("Activity not found");
+                    if(activity == null) throw new RestException(HttpStatusCode.NotFound, new {activity = "Not found" });
 
                     activity.Title = request.Title ?? activity.Title;
                     activity.Description = request.Description ?? activity.Description;

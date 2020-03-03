@@ -1,6 +1,8 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using AutoMapper;
 using MediatR;
 using Persistence;
@@ -28,7 +30,7 @@ namespace Application.Activities
             {
                 var activity = await _db.Activities.FindAsync(request.Id);
                 
-                if(activity == null) throw new Exception("Activity not found");
+                if(activity == null) throw new RestException(HttpStatusCode.NotFound, new {activity = "Not found" });
                 
                 _db.Remove(activity);
 

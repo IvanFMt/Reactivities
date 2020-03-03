@@ -15,10 +15,11 @@ const ActivityDetail: React.FC<RouteComponentProps<RouteParms>> = ({ match, hist
     const { selectedActivity, loadActivity, loadingPage } = activityStore;
 
     useEffect(() => {
-        loadActivity(match.params.id);
+        loadActivity(match.params.id)
     },[loadActivity, match.params.id])
     
-    if (loadingPage || selectedActivity === undefined) return (<LoadingScreen content="Loading the page for you..." />);
+    if (loadingPage || !selectedActivity) return (<LoadingScreen content="Loading the page for you..." />);
+
     return (
         <Card>
             <Card.Img variant="top" src={`/assets/categoryImages/${selectedActivity!.category}.jpg`} />
@@ -33,7 +34,7 @@ const ActivityDetail: React.FC<RouteComponentProps<RouteParms>> = ({ match, hist
                 <ButtonGroup size="sm" className="mt-1 btn-block">
                     <Button
                         as={Link}
-                        to={`/manage/${selectedActivity.id}`}
+                        to={`/manage/${selectedActivity!.id}`}
                         variant="outline-primary"
                     >Edit
                 </Button>

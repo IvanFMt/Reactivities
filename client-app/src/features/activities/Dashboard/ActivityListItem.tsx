@@ -1,7 +1,5 @@
-import React, { useContext, SyntheticEvent } from 'react';
+import React from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
-import ActivityStore from '../../../app/stores/ActivityStore';
-
 //@ts-ignore
 import { Link }from 'react-router-dom';
 import { IActivity } from '../../../app/models/activities';
@@ -11,11 +9,8 @@ interface IProps{
 }
 
 const ActivityListItem : React.FC<IProps>= ({ activity }) => {
-    const activityStore = useContext(ActivityStore);
-    const {  submitting, target, deleteActivity  }  = activityStore;
-
     return (
-        <Card key={activity.id} style={{ width: '40rem' }} className="mt-2">
+        <Card className="mt-2">
             <Card.Body>
                 <Card.Title>{activity.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{activity.date}</Card.Subtitle>
