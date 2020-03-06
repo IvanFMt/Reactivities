@@ -22,6 +22,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="TestRole")]
         public async Task<ActionResult<User>> CurrentUser()
         {
             return await Mediator.Send(new CurrentUser.Query());

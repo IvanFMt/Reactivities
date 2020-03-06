@@ -22,7 +22,8 @@ namespace Infrastructure.Security
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId,user.UserName),
+                new Claim(ClaimTypes.Role,"TestRole")
             };
 
             // generate signing credentials 
@@ -32,7 +33,7 @@ namespace Infrastructure.Security
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = creds
+                SigningCredentials = creds,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

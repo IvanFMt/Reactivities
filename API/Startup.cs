@@ -68,11 +68,10 @@ namespace API
                     });
 
             var builder = services.AddIdentityCore<AppUser>();
-
             var identitybuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identitybuilder.AddEntityFrameworkStores<DataContext>();
             identitybuilder.AddSignInManager<SignInManager<AppUser>>();
-
+            
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Key"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
