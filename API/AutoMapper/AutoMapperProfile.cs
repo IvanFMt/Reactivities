@@ -1,4 +1,3 @@
-using Application.Activities;
 using AutoMapper;
 using Domain;
 
@@ -8,12 +7,15 @@ namespace API.AutoMapperProfile
     {
         public AutoMapperProfile()
         {
-            CreateMap<Activity, Create.Command>()
+            CreateMap<Activity, Application.Activities.Create.Command>()
                 .ReverseMap();
 
-            CreateMap<Activity, Edit.Command>()
+            CreateMap<Activity, Application.Activities.Edit.Command>()
                 .ReverseMap()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<AppUser, Application.Users.Register.Command>()
+                .ReverseMap();
         }
     }
 }
