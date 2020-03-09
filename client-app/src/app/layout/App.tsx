@@ -15,6 +15,7 @@ import NotFound from './NotFound';
 import { ToastContainer } from 'react-toastify';
 import Forming from './Forming';
 import Forming2 from './Forming2';
+import LoginForm from '../../features/user/LoginForm';
 
 const App: React.FC<RouteComponentsProps> = ({ location }) => {
   return (
@@ -28,7 +29,7 @@ const App: React.FC<RouteComponentsProps> = ({ location }) => {
             <Switch>
               <Route exact path='/activities' component={ActivityDasboard} />
               <Route exact path='/test' component={Forming} />
-              <Route exact path='/otro' component={Forming2} />
+              <Route exact path='/login' component={LoginForm} />
               <Route path='/activity/:id' component={ActivityDetail} />
               <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
               <Route component={NotFound}/>

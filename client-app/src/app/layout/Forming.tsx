@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Form, Button, Container, Col, InputGroup } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { MdDateRange } from "react-icons/md";

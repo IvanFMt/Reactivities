@@ -3,16 +3,17 @@ import { Row, Col } from 'react-bootstrap'
 import ActivityList from './ActivityList';
 import { observer } from 'mobx-react-lite';
 import LoadingScreen from '../../../app/layout/LoadingScreen';
-import ActivityStore from '../../../app/stores/ActivityStore';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const ActivityDasboard: React.FC = () => {
-    const activityStore = useContext(ActivityStore);
+    const rootStore = useContext(RootStoreContext);
+    const {loadActivities, loadingPage} = rootStore.activityStore;
 
     useEffect(() => {
-      activityStore.loadActivities();
-    }, [activityStore]);
+      loadActivities();
+    }, [loadActivities]);
   
-    if (activityStore.loadingPage) return (<LoadingScreen content="Loading the page for you..." />);
+    if (loadingPage) return (<LoadingScreen content="Loading the page for you..." />);
     
     return (
         <Fragment>

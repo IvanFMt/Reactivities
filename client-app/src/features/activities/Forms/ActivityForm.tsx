@@ -10,11 +10,12 @@ import ActivityStore from '../../../app/stores/ActivityStore';
 import { v4 as uuid } from 'uuid';
 //@ts-ignore 
 import { RouteComponentsProps, Link } from 'react-router-dom';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const ActivityForm: React.FC<RouteComponentsProps> = ({ history }) => {
 
-    const activityStore = useContext(ActivityStore);
-    const { createActivity, editActivity, submitting, cancelSelectedActivity, selectedActivity, clearActivity } = activityStore;
+    const rootStore = useContext(RootStoreContext);
+    const { submitting, cancelSelectedActivity, selectedActivity, clearActivity } = rootStore.activityStore;
 
     const initializeForm = () => {
         if (selectedActivity) { return selectedActivity }

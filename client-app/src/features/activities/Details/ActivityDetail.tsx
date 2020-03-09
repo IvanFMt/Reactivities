@@ -5,14 +5,17 @@ import { observer } from 'mobx-react-lite';
 //@ts-ignore
 import  { RouteComponentProps, Link } from 'react-router-dom';
 import LoadingScreen from '../../../app/layout/LoadingScreen';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 interface RouteParms{
     id: string
 }
 
 const ActivityDetail: React.FC<RouteComponentProps<RouteParms>> = ({ match, history }) => {
-    const activityStore = useContext(ActivityStore);
-    const { selectedActivity, loadActivity, loadingPage } = activityStore;
+
+    const rootStore = useContext(RootStoreContext);
+
+    const { selectedActivity, loadActivity, loadingPage } = rootStore.activityStore;
 
     useEffect(() => {
         loadActivity(match.params.id)
